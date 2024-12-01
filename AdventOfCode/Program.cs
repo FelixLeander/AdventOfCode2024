@@ -13,22 +13,15 @@ var unsortedNums =
     })
     .ToArray();
 
+
+
+Console.WriteLine(
 #if D1P1
-var xSort = unsortedNums.OrderBy(o => o.X).ToList();
-var ySort = unsortedNums.OrderBy(o => o.Y).ToList();
-int solution = 0;
-for (int i = 0; i < ySort.Count; i++)
-{
-    var diff = (xSort[i].X - ySort[i].Y);
-    if (diff <= 0)
-        diff *= -1;
-
-    solution += diff;
-}
-
-Console.WriteLine(solution);
+unsortedNums.OrderBy(o => o.X)
+    .Zip(unsortedNums.OrderBy(o => o.Y))
+    .Sum(s => int.Abs(s.First.X - s.Second.Y))
 #elif D1P2
-Console.WriteLine(unsortedNums
+unsortedNums
     .Select(s => s.X)
     .Distinct()
     .Sum(u =>
@@ -37,5 +30,7 @@ Console.WriteLine(unsortedNums
         .FirstOrDefault(f => f.Key == u)
         ?.Count() * u
         ?? 0
-    ));
+    )
 #endif
+    );
+
