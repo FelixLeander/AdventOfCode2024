@@ -1,7 +1,6 @@
 ﻿using AdventOfCode;
 using System.Drawing;
 using System.Text;
-using System.Xml;
 
 var unsortedNums =
     Encoding.UTF8.GetString(Resource.InputD1)
@@ -29,9 +28,14 @@ for (int i = 0; i < ySort.Count; i++)
 
 Console.WriteLine(solution);
 #elif D1P2
-var groups = unsortedNums.GroupBy(g => g.Y).ToArray();
-var uniques = unsortedNums.Select(s => s.X).Distinct().ToArray();
-int solution = uniques.Sum(u => groups.FirstOrDefault(f => f.Key == u)?.Count() * u ?? 0);
-
-Console.WriteLine(solution);
+Console.WriteLine(unsortedNums
+    .Select(s => s.X)
+    .Distinct()
+    .Sum(u =>
+        unsortedNums
+        .GroupBy(g => g.Y)
+        .FirstOrDefault(f => f.Key == u)
+        ?.Count() * u
+        ?? 0
+    ));
 #endif
