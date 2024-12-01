@@ -29,6 +29,5 @@ for (int i = 0; i < ySort.Count; i++)
 Console.WriteLine(solution);
 #elif D1P2
 
-unsortedNums.
 #endif
 
