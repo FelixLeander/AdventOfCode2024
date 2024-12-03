@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Collections.Frozen;
 
+static void Warning(string e, bool newLine = true) => PrintColor(e, ConsoleColor.Yellow, newLine);
 static void Error(string e, bool newLine = true) => PrintColor(e, ConsoleColor.Red, newLine);
 static void Valid(string e, bool newLine = true) => PrintColor(e, ConsoleColor.Green, newLine);
 static void PrintColor(string text, ConsoleColor consoleColor, bool newLine = true)
@@ -62,7 +63,7 @@ static bool? DetermineCrease(int[] nums)
     int last = nums.First();
     var numNotFirst = nums.Skip(1);
     var increase = nums.First() < numNotFirst.First();
-
+    var joker = true;
     var valid = numNotFirst.All(a =>
     {
         if (increase)
@@ -73,7 +74,15 @@ static bool? DetermineCrease(int[] nums)
                 return true;
             }
             else
+            {
+                if (joker)
+                {
+                    Warning("Joker used, changeDir+.");
+                    joker = false;
+                    return true;
+                }
                 return false;
+            }
         }
         else
         {
@@ -83,7 +92,15 @@ static bool? DetermineCrease(int[] nums)
                 return true;
             }
             else
+            {
+                if (joker)
+                {
+                    Warning("Joker used, changeDir-.");
+                    joker = false;
+                    return true;
+                }
                 return false;
+            }
         }
     });
 
@@ -111,6 +128,7 @@ foreach (var report in reports)
     Console.WriteLine(direction.Value ? "Increaseing" : "Decreasing");
 
     var crease = direction.Value ? 1 : -1;
+    var joker = true;
     var withinLimit = report.All(a =>
     {
         if (last == null) // First
@@ -121,12 +139,25 @@ foreach (var report in reports)
 
         if (last == a) // same
         {
+            if (joker)
+            {
+                Warning("Joker used, same.");
+                joker = false;
+                return true;
+            }
+
             Error($"Same {last}=={a}");
             return false;
         }
 
         if (last * crease > a * crease) // Change in direction
         {
+            if (joker)
+            {
+                Warning("Joker used, direction chagne.");
+                joker = false;
+                return true;
+            }
             Error($"Direction change: {last} => {a}");
             return false;
         }
@@ -134,6 +165,11 @@ foreach (var report in reports)
         var limitChange = (limit * crease) + last;
         if (crease == 1 ? limitChange < a : limitChange > a) // Overshoot
         {
+            if (joker)
+            {
+                Warning("Joker used, overshoot.");
+                return true;
+            }
             Error($"{limit}: out {last} > {a}");
             return false;
         }
@@ -147,7 +183,7 @@ foreach (var report in reports)
     if (!withinLimit)
         continue;
 
-    PrintColor($"Valid", ConsoleColor.DarkYellow);
+    PrintColor($"Valid", ConsoleColor.Cyan);
     valid++;
 }
 
@@ -157,3 +193,50 @@ Console.WriteLine("END");
 #endregion
 
 
+#region Day3
+#if D3P1
+var mulStarts = Encoding.UTF8.GetString(AdventOfCode.Resource.InputD3)
+    .Split("mul(");
+
+int sum = 0;
+foreach (var mulLine in mulStarts)
+{
+    Console.WriteLine();
+    Console.WriteLine(mulLine);
+    var commaPos = mulLine.IndexOf(',');
+    if (commaPos == -1)
+    {
+        Error("Skip, no comma.");
+        continue;
+    }
+
+    var firstNumText = mulLine[..commaPos];
+    if (!int.TryParse(firstNumText, out int numOne))
+    {
+        Error($"P1 not a number '{numOne}'.");
+        continue;
+    }
+
+    var paranthesisPos = mulLine.IndexOf(')', commaPos);
+    if (paranthesisPos == -1)
+    {
+        Error("Skip, no paranthesisPos.");
+        continue;
+    }
+
+    var secondNumtext = mulLine[(commaPos+1)..paranthesisPos];
+    if (!int.TryParse(secondNumtext, out int numTwo))
+    {
+        Error($"P2 not a number '{numTwo}'.");
+        continue;
+    }
+
+    var mulResult = numOne * numTwo;
+    sum += mulResult;
+    Valid($"P1: {numOne}, P2: {numTwo}");
+}
+
+Console.WriteLine(sum);
+
+#endif
+#endregion

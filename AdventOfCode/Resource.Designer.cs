@@ -79,5 +79,15 @@ namespace AdventOfCode {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] InputD3 {
+            get {
+                object obj = ResourceManager.GetObject("InputD3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

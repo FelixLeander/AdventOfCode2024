@@ -124,4 +124,7 @@
   <data name="InputD2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>inputD2.txt;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="InputD3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>inputD3.txt;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
