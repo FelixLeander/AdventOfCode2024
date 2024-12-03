@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release;D1P1;D1P2</Configurations>
+    <Configurations>Debug;Release;D1P1;D1P2;D2P1</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
